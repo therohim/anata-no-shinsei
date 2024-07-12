@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Chat Example</title>
+  <script src="https://cdn.socket.io/4.3.2/socket.io.min.js"></script>
+  <script>
+    const socket = io('http://localhost:2093'); // Replace with your server URL
+
+    socket.on('connect', () => {
+      console.log('Connected to server');
+    });
+
+    socket.on('chatMessage', (message) => {
+      console.log('Received message:', message);
+      // Handle the received message here (e.g., display it in the UI)
+    });
+
+    function sendMessage() {
+      const message = document.getElementById('messageInput').value;
+      socket.emit('chatMessage', message); // Send message to the server
+    }
+  </script>
+</head>
+<body>
+  <input type="text" id="messageInput" placeholder="Type your message">
+  <button onclick="sendMessage()">Send</button>
+</body>
+</html>

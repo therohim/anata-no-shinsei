@@ -1,0 +1,50 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: youapp_chat_app
+    restart: always
+    ports:
+      - "2093:2093"
+    depends_on:
+      - mongo
+      - rabbitmq
+    environment:
+      - NODE_ENV=development
+      - APP_DOMAIN=localhost
+      - APP_PORT=2093
+      - MONGO_DATABASE_URI=mongodb://mongo:27017/youapp_chat_db
+      - JWT_EXPIRES_IN=12d
+      - JWT_ACCESS_TOKEN=accessexxx
+      - JWT_REFRESH_TOKEN=refreshexxx
+      - SALT=10
+      - CLOUDINARY_CLOUD_NAME=daahzshja
+      - CLOUDINARY_API_KEY=698327955825739
+      - CLOUDINARY_API_SECRET=w19ePObWcFAcKVjTB67JVgj0aHE
+      - AMQP_URI=amqp://rabbitmq:5672
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  mongo_data:
+  rabbitmq_data:
